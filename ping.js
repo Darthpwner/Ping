@@ -1,3 +1,14 @@
+// Constants	
+P1_UP = 87		// 'w'
+P1_DOWN = 83	//	's'
+P1_LEFT = 65	// 'a'
+P1_RIGHT = 68	// 'd'
+
+P2_UP = 38		// UP ARROW
+P2_DOWN = 40	// DOWN ARROW
+P2_LEFT = 37	// LEFT ARROW
+P2_RIGHT = 39	// RIGHT ARROW
+
 function Game() {
 	var canvas = document.getElementById("game");
 	this.width = canvas.width;
@@ -37,16 +48,24 @@ Game.prototype.update = function()
 	this.ball.update();
 
 	// To which Y direction the paddle is moving
-	if (this.keys.isPressed(83)) {	// DOWN
+	if (this.keys.isPressed(P1_DOWN)) {	// DOWN
 		this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 10);
-	} else if (this.keys.isPressed(87)) {	// UP
+	} else if (this.keys.isPressed(P1_UP)) {	// UP
 		this.p1.y = Math.max(0, this.p1.y - 10);
+	} else if (this.keys.isPressed(P1_LEFT)) {	// LEFT
+		this.p1.x = Math.max(0, this.p1.x - 10);
+	} else if (this.keys.isPressed(P1_RIGHT)) {	// RIGHT
+		this.p1.x = Math.min(this.width - this.p1.width, this.p1.x + 10);		
 	}
 
-	if (this.keys.isPressed(40)) {	// DOWN
+	if (this.keys.isPressed(P2_DOWN)) {	// DOWN
 		this.p2.y = Math.min(this.height - this.p2.height, this.p2.y + 10);
-	} else if (this.keys.isPressed(38))	{	// UP
+	} else if (this.keys.isPressed(P2_UP))	{	// UP
 		this.p2.y = Math.max(0, this.p2.y - 10);
+	} else if (this.keys.isPressed(P2_LEFT)) {	// LEFT
+		this.p2.x = Math.max(0, this.p2.x - 10);		
+	} else if (this.keys.isPressed(P2_RIGHT)) {	// RIGHT
+		this.p2.x = Math.min(this.width - this.p2.width, this.p2.x + 10);
 	}
 
 	if (this.ball.vx > 0) {
