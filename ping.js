@@ -4,6 +4,7 @@ function Game() {
 	this.height = canvas.height;
 	this.context = canvas.getContext("2d");
 	this.context.fillStyle = "white";
+	this.keys = new KeyListener();
 
 	this.p1 = new Paddle(5, 0);
 	this.p1.y = this.height/2 - this.p1.height/2;
@@ -24,6 +25,19 @@ Game.prototype.update = function()
 {
 	if (this.paused)
 		return;
+
+	// To which Y direction the paddle is moving
+	if (this.keys.isPressed(83)) {	// DOWN
+		this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 10);
+	} else if (this.keys.isPressed(87)) {	// UP
+		this.p1.y = Math.max(0, this.p1.y - 10);
+	}
+
+	if (this.keys.isPressed(40)) {	// DOWN
+		this.p2.y = Math.min(this.height - this.p2.height, this.p2.y + 10);
+	} else if (this.keys.isPressed(38))	{	// UP
+		this.p2.y = Math.max(0, this.p2.y - 10);
+	}
 };
 
 function Paddle(x, y) {
