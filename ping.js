@@ -34,6 +34,8 @@ Game.prototype.update = function()
 	if (this.paused)
 		return;
 
+	this.ball.update();
+
 	// To which Y direction the paddle is moving
 	if (this.keys.isPressed(83)) {	// DOWN
 		this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 10);
@@ -47,12 +49,38 @@ Game.prototype.update = function()
 		this.p2.y = Math.max(0, this.p2.y - 10);
 	}
 
-	this.ball.update();
-	if(this.ball.x > this.width || this.ball.x + this.ball.width < 0) {
-		this.ball.vx = -this.ball.vx;
-	} else if(this.ball.y > this.height || this.ball.y + this.ball.height < 0) {
-		this.ball.vy = - this.ball.vy;
-	}
+	if (this.ball.vx > 0) {
+        if (this.p2.x <= this.ball.x + this.ball.width &&
+                this.p2.x > this.ball.x - this.ball.vx + this.ball.width) {
+            var collisionDiff = this.ball.x + this.ball.width - this.p2.x;
+            var k = collisionDiff/this.ball.vx;
+            var y = this.ball.vy*k + (this.ball.y - this.ball.vy);
+            if (y >= this.p2.y && y + this.ball.height <= this.p2.y + this.p2.height) {
+                // collides with right paddle
+                this.ball.x = this.p2.x - this.ball.width;
+                this.ball.y = Math.floor(this.ball.y - this.ball.vy + this.ball.vy*k);
+                this.ball.vx = -this.ball.vx;
+            }
+        }
+    } else {
+        if (this.p1.x + this.p1.width >= this.ball.x) {
+            var collisionDiff = this.p1.x + this.p1.width - this.ball.x;
+            var k = collisionDiff/-this.ball.vx;
+            var y = this.ball.vy*k + (this.ball.y - this.ball.vy);
+            if (y >= this.p1.y && y + this.ball.height <= this.p1.y + this.p1.height) {
+                // collides with the left paddle
+                this.ball.x = this.p1.x + this.p1.width;
+                this.ball.y = Math.floor(this.ball.y - this.ball.vy + this.ball.vy*k);
+                this.ball.vx = -this.ball.vx;
+            }
+        }
+    }
+ 
+    // Top and bottom collision
+    if ((this.ball.vy < 0 && this.ball.y < 0) ||
+            (this.ball.vy > 0 && this.ball.y + this.ball.height > this.height)) {
+        this.ball.vy = -this.ball.vy;
+    }
 };
 
 function Paddle(x, y) {
