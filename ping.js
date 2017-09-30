@@ -94,6 +94,20 @@ Game.prototype.update = function()
             }
         }
     }
+
+    if(this.ball.x < 0 || this.ball.x > this.width) {
+    	this.ball.x = this.width/2;
+		this.ball.y = this.height/2;
+		this.ball.vy = Math.floor(Math.random() * 12 - 6);
+
+		// Debug ball directionals after
+
+		if(this.ball.x < 0) {
+			this.ball.vx = 7 - Math.abs(this.ball.vy);
+		} else if (this.ball.x > this.width) {
+			this.ball.vx = -(7 - Math.abs(this.ball.vy));
+		}
+    }
  
     // Top and bottom collision
     if ((this.ball.vy < 0 && this.ball.y < 0) ||
