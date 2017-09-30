@@ -54,7 +54,7 @@ Game.prototype.update = function()
 		this.p1.y = Math.max(0, this.p1.y - 10);
 	} else if (this.keys.isPressed(P1_LEFT)) {	// LEFT
 		this.p1.x = Math.max(0, this.p1.x - 10);
-	} else if (this.keys.isPressed(P1_RIGHT)) {	// RIGHT
+	} else if (this.keys.isPressed(P1_RIGHT) && this.p1.x < this.width/2 - 20) {	// RIGHT
 		this.p1.x = Math.min(this.width - this.p1.width, this.p1.x + 10);		
 	}
 
@@ -62,7 +62,7 @@ Game.prototype.update = function()
 		this.p2.y = Math.min(this.height - this.p2.height, this.p2.y + 10);
 	} else if (this.keys.isPressed(P2_UP))	{	// UP
 		this.p2.y = Math.max(0, this.p2.y - 10);
-	} else if (this.keys.isPressed(P2_LEFT)) {	// LEFT
+	} else if (this.keys.isPressed(P2_LEFT) && this.p2.x > this.width/2 + 20) {	// LEFT
 		this.p2.x = Math.max(0, this.p2.x - 10);		
 	} else if (this.keys.isPressed(P2_RIGHT)) {	// RIGHT
 		this.p2.x = Math.min(this.width - this.p2.width, this.p2.x + 10);
