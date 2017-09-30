@@ -10,12 +10,20 @@ function Game() {
 	this.p1.y = this.height/2 - this.p1.height/2;
 	this.p2 = new Paddle(this.width - 15, 0);
 	this.p2.y = this.height/2 - this.p2.height/2;
+
+	this.ball = new Ball();
+	this.ball.x = this.width/2;
+	this.ball.y = this.height/2;
+	this.ball.vy = Math.floor(Math.random() * 12 - 6);
+	this.ball.vx = 7 - Math.abs(this.ball.vy);
 }
 
 Game.prototype.draw = function()
 {
 	this.context.clearRect(0, 0, this.width, this.height);
 	this.context.fillRect(this.width/2, 0, 10, this.height);
+
+	this.ball.draw(this.context);
 
 	this.p1.draw(this.context);
 	this.p2.draw(this.context);
@@ -37,6 +45,13 @@ Game.prototype.update = function()
 		this.p2.y = Math.min(this.height - this.p2.height, this.p2.y + 10);
 	} else if (this.keys.isPressed(38))	{	// UP
 		this.p2.y = Math.max(0, this.p2.y - 10);
+	}
+
+	this.ball.update();
+	if(this.ball.x > this.width || this.ball.x + this.ball.width < 0) {
+		this.ball.vx = -this.ball.vx;
+	} else if(this.ball.y > this.height || this.ball.y + this.ball.height < 0) {
+		this.ball.vy = - this.ball.vy;
 	}
 };
 
@@ -80,6 +95,24 @@ KeyListener.prototype.addKeyPressListener = function(keyCode, callback)
 			callback(e);
 	});
 };
+
+function Ball() {
+	this.x = 0;
+	this.y = 0;
+	this.vx = 0;
+	this.vy = 0;
+	this.width = 10;
+	this.height = 10;
+}
+
+Ball.prototype.update = function() {
+	this.x += this.vx;
+	this.y += this.vy;
+};
+
+Ball.prototype.draw = function(p) {
+	p.fillRect(this.x, this.y, this.width, this.height);
+}
 
 // Initialize our game instance
 var game = new Game();
