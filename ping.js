@@ -75,6 +75,7 @@ Game.prototype.update = function()
 		this.p2.x = Math.min(this.width - this.p2.width, this.p2.x + 10);
 	}
 
+	// left and right collision
 	if (this.ball.vx > 0) {
         if (this.p2.x <= this.ball.x + this.ball.width &&
                 this.p2.x > this.ball.x - this.ball.vx + this.ball.width) {
@@ -143,7 +144,7 @@ function Paddle(x, y) {
 Paddle.prototype.draw = function(p) 
 {
 	p.fillRect(this.x, this.y, this.width, this.height);
-}
+};
 
 function KeyListener() {
 	this.pressedKeys = [];
@@ -158,7 +159,7 @@ function KeyListener() {
 
 	document.addEventListener("keydown", this.keydown.bind(this));
 	document.addEventListener("keyup", this.keyup.bind(this));
-}
+};
 
 KeyListener.prototype.isPressed = function(key)
 {
@@ -189,18 +190,20 @@ Ball.prototype.update = function() {
 
 Ball.prototype.draw = function(p) {
 	p.fillRect(this.x, this.y, this.width, this.height);
-}
+};
 
 function Display(x, y) {
 	this.x = x;
 	this.y = y;
 	this.value = 0;
+	// this.width = 10;
+	// this.height = 10;
 }
 
 Display.prototype.draw = function(p)
 {
 	p.fillText(this.value, this.x, this.y);
-}
+};
 
 // Initialize our game instance
 var game = new Game();
