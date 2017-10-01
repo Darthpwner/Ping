@@ -19,8 +19,10 @@ function Game() {
 
 	this.p1 = new Paddle(5, 0);
 	this.p1.y = this.height/2 - this.p1.height/2;
+	this.display1 = new Display(this.width/4, 25);
 	this.p2 = new Paddle(this.width - 15, 0);
 	this.p2.y = this.height/2 - this.p2.height/2;
+	this.display2 = new Display(this.width*3/4, 25);
 
 	this.ball = new Ball();
 	this.ball.x = this.width/2;
@@ -38,6 +40,9 @@ Game.prototype.draw = function()
 
 	this.p1.draw(this.context);
 	this.p2.draw(this.context);
+
+	this.display1.draw(this.context);
+	this.display2.draw(this.context);
 };
 
 Game.prototype.update = function()
@@ -46,6 +51,8 @@ Game.prototype.update = function()
 		return;
 
 	this.ball.update();
+	this.display1.value = this.p1.score;
+	this.display2.value = this.p2.score;
 
 	// To which Y direction the paddle is moving
 	if (this.keys.isPressed(P1_DOWN)) {	// DOWN
@@ -94,26 +101,35 @@ Game.prototype.update = function()
             }
         }
     }
-
-    if(this.ball.x < 0 || this.ball.x > this.width) {
-    	this.ball.x = this.width/2;
-		this.ball.y = this.height/2;
-		this.ball.vy = Math.floor(Math.random() * 12 - 6);
-
-		// Debug ball directionals after
-
-		if(this.ball.x < 0) {
-			this.ball.vx = 7 - Math.abs(this.ball.vy);
-		} else if (this.ball.x > this.width) {
-			this.ball.vx = -(7 - Math.abs(this.ball.vy));
-		}
-    }
  
     // Top and bottom collision
     if ((this.ball.vy < 0 && this.ball.y < 0) ||
             (this.ball.vy > 0 && this.ball.y + this.ball.height > this.height)) {
         this.ball.vy = -this.ball.vy;
     }
+
+    // Scoring
+    if (this.ball.x >= this.width)
+    	this.score(this.p1);
+    else if (this.ball.x + this.ball.width <= 0)
+    	this.score(this.p2);
+};
+
+Game.prototype.score = function(p) 
+{
+	// player scores
+	p.score++;
+	var player = p == this.p1 ? 0 : 1;
+
+	// set ball position
+	this.ball.x = this.width/2;
+	this.ball.y = p.y + p.height/2;
+
+	// set ball velocity
+	this.ball.vy = Math.floor(Math.random()*12 - 6);
+	this.ball.vx = 7 - Math.abs(this.ball.vy);
+	if (player == 1)
+		this.ball.vx *= -1;
 };
 
 function Paddle(x, y) {
@@ -173,6 +189,17 @@ Ball.prototype.update = function() {
 
 Ball.prototype.draw = function(p) {
 	p.fillRect(this.x, this.y, this.width, this.height);
+}
+
+function Display(x, y) {
+	this.x = x;
+	this.y = y;
+	this.value = 0;
+}
+
+Display.prototype.draw = function(p)
+{
+	p.fillText(this.value, this.x, this.y);
 }
 
 // Initialize our game instance
