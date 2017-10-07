@@ -56,23 +56,23 @@ Game.prototype.update = function()
 
 	// To which direction is the paddle is moving
 	if (this.keys.isPressed(P1_DOWN)) {	// DOWN
-		this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 5);
+		this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 4);
 	} else if (this.keys.isPressed(P1_UP)) {	// UP
-		this.p1.y = Math.max(0, this.p1.y - 5);
+		this.p1.y = Math.max(0, this.p1.y - 4);
 	} else if (this.keys.isPressed(P1_LEFT)) {	// LEFT
-		this.p1.x = Math.max(0, this.p1.x - 5);
+		this.p1.x = Math.max(0, this.p1.x - 2);
 	} else if (this.keys.isPressed(P1_RIGHT) && this.p1.x < this.width/2 - 20) {	// RIGHT
-		this.p1.x = Math.min(this.width - this.p1.width, this.p1.x + 5);		
+		this.p1.x = Math.min(this.width - this.p1.width, this.p1.x + 2);		
 	}
 
 	if (this.keys.isPressed(P2_DOWN)) {	// DOWN
-		this.p2.y = Math.min(this.height - this.p2.height, this.p2.y + 5);
+		this.p2.y = Math.min(this.height - this.p2.height, this.p2.y + 4);
 	} else if (this.keys.isPressed(P2_UP))	{	// UP
-		this.p2.y = Math.max(0, this.p2.y - 5);
+		this.p2.y = Math.max(0, this.p2.y - 4);
 	} else if (this.keys.isPressed(P2_LEFT) && this.p2.x > this.width/2 + 20) {	// LEFT
-		this.p2.x = Math.max(0, this.p2.x - 5);		
+		this.p2.x = Math.max(0, this.p2.x - 2);		
 	} else if (this.keys.isPressed(P2_RIGHT)) {	// RIGHT
-		this.p2.x = Math.min(this.width - this.p2.width, this.p2.x + 5);
+		this.p2.x = Math.min(this.width - this.p2.width, this.p2.x + 2);
 	}
 
 	// left and right collision
@@ -90,7 +90,8 @@ Game.prototype.update = function()
             }
         }
     } else {
-        if (this.p1.x + this.p1.width >= this.ball.x) {
+        if (this.p1.x + this.p1.width >= this.ball.x &&
+        		this.p1.x < this.ball.x - this.ball.vx + this.ball.width) {
             var collisionDiff = this.p1.x + this.p1.width - this.ball.x;
             var k = collisionDiff/-this.ball.vx;
             var y = this.ball.vy*k + (this.ball.y - this.ball.vy);
