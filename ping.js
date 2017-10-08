@@ -58,40 +58,54 @@ Game.prototype.update = function()
 	if(this.p1.computerPlayer) {
 		console.log("Playing a P1 computerPlayer");
 
-		if(this.p1.y <= this.ball.y) {
-			this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 5);
-		} else if (this.p1.y > this.ball.y) {
-			this.p1.y = Math.max(0, this.p1.y - 5);
+		if(this.p1.y + this.p1.height / 2 <= this.ball.y + this.ball.height / 2) {
+			this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 4);
+
+			// Move left and right if necessary
+			if(this.ball.x < this.width / 2 - 20 && this.p1.x < this.width / 2 - 20) {
+				this.p1.x = Math.min(this.width - this.p1.width, this.p1.x + 2);
+			} else if (this.p1.x > 5) {
+				this.p1.x = Math.max(0, this.p1.x - 2);
+			}
+		} else if (this.p1.y + this.p1.height / 2 > this.ball.y + this.ball.height / 2) {
+			this.p1.y = Math.max(0, this.p1.y - 4);
 		}
 	} else {
 		if (this.keys.isPressed(P1_DOWN)) {	// DOWN
-			this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 5);
+			this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 4);
 		} else if (this.keys.isPressed(P1_UP)) {	// UP
-			this.p1.y = Math.max(0, this.p1.y - 5);
-		} else if (this.keys.isPressed(P1_LEFT)) {	// LEFT
-			this.p1.x = Math.max(0, this.p1.x - 5);
+			this.p1.y = Math.max(0, this.p1.y - 4);
+		} else if (this.keys.isPressed(P1_LEFT) && this.p1.x > 5) {	// LEFT
+			this.p1.x = Math.max(0, this.p1.x - 2);
 		} else if (this.keys.isPressed(P1_RIGHT) && this.p1.x < this.width/2 - 20) {	// RIGHT
-			this.p1.x = Math.min(this.width - this.p1.width, this.p1.x + 5);		
+			this.p1.x = Math.min(this.width - this.p1.width, this.p1.x + 2);		
 		}
 	}
 
 	if(this.p2.computerPlayer) {
 		console.log("Playing a P2 computerPlayer");
 
-		if(this.p2.y < this.ball.y) {
-			this.p2.y = Math.min(this.height - this.p2.height, this.p2.y + 5);
-		} else if (this.p2.y >= this.ball.y) {
-			this.p2.y = Math.max(0, this.p2.y - 5);
+		if(this.p2.y + this.p2.height / 2 < this.ball.y + this.ball.height / 2) {
+			this.p2.y = Math.min(this.height - this.p2.height, this.p2.y + 4);
+		} else if (this.p2.y + this.p2.height >= this.ball.y + this.ball.height / 2) {
+			this.p2.y = Math.max(0, this.p2.y - 4);
+
+			// Move left and right if necessary
+			// if(this.ball.x > this.width / 2 + 20 && this.p2.x > this.width / 2 + 20) {
+			// 	this.p2.x = Math.max(0, this.p2.x - 4);	
+			// } else {
+			// 	this.p2.x = Math.min(this.width - this.p2.width, this.p2.x + 4);
+			// }
 		}
 	} else {
 		if (this.keys.isPressed(P2_DOWN)) {	// DOWN
-			this.p2.y = Math.min(this.height - this.p2.height, this.p2.y + 5);
+			this.p2.y = Math.min(this.height - this.p2.height, this.p2.y + 2);
 		} else if (this.keys.isPressed(P2_UP))	{	// UP
-			this.p2.y = Math.max(0, this.p2.y - 5);
+			this.p2.y = Math.max(0, this.p2.y - 2);
 		} else if (this.keys.isPressed(P2_LEFT) && this.p2.x > this.width/2 + 20) {	// LEFT
-			this.p2.x = Math.max(0, this.p2.x - 5);		
-		} else if (this.keys.isPressed(P2_RIGHT)) {	// RIGHT
-			this.p2.x = Math.min(this.width - this.p2.width, this.p2.x + 5);
+			this.p2.x = Math.max(0, this.p2.x - 4);		
+		} else if (this.keys.isPressed(P2_RIGHT) && this.p2.x < this.width - 15) {	// RIGHT
+			this.p2.x = Math.min(this.width - this.p2.width, this.p2.x + 4);
 		}
 	}
 
