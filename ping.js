@@ -17,10 +17,10 @@ function Game() {
 	this.context.fillStyle = "white";
 	this.keys = new KeyListener();
 
-	this.p1 = new Paddle(5, 0, false);
+	this.p1 = new Paddle(5, 0, true);
 	this.p1.y = this.height/2 - this.p1.height/2;
 	this.display1 = new Display(this.width/4, 25);
-	this.p2 = new Paddle(this.width - 15, 0, false);
+	this.p2 = new Paddle(this.width - 15, 0, true);
 	this.p2.y = this.height/2 - this.p2.height/2;
 	this.display2 = new Display(this.width*3/4, 25);
 
@@ -57,6 +57,12 @@ Game.prototype.update = function()
 	// To which direction is the paddle is moving
 	if(this.p1.computerPlayer) {
 		console.log("Playing a P1 computerPlayer");
+
+		if(this.p1.y <= this.ball.y) {
+			this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 5);
+		} else if (this.p1.y > this.ball.y) {
+			this.p1.y = Math.max(0, this.p1.y - 5);
+		}
 	} else {
 		if (this.keys.isPressed(P1_DOWN)) {	// DOWN
 			this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 5);
@@ -71,6 +77,12 @@ Game.prototype.update = function()
 
 	if(this.p2.computerPlayer) {
 		console.log("Playing a P2 computerPlayer");
+
+		if(this.p2.y < this.ball.y) {
+			this.p2.y = Math.min(this.height - this.p2.height, this.p2.y + 5);
+		} else if (this.p2.y >= this.ball.y) {
+			this.p2.y = Math.max(0, this.p2.y - 5);
+		}
 	} else {
 		if (this.keys.isPressed(P2_DOWN)) {	// DOWN
 			this.p2.y = Math.min(this.height - this.p2.height, this.p2.y + 5);
