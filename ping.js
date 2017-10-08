@@ -17,10 +17,10 @@ function Game() {
 	this.context.fillStyle = "white";
 	this.keys = new KeyListener();
 
-	this.p1 = new Paddle(5, 0);
+	this.p1 = new Paddle(5, 0, false);
 	this.p1.y = this.height/2 - this.p1.height/2;
 	this.display1 = new Display(this.width/4, 25);
-	this.p2 = new Paddle(this.width - 15, 0);
+	this.p2 = new Paddle(this.width - 15, 0, false);
 	this.p2.y = this.height/2 - this.p2.height/2;
 	this.display2 = new Display(this.width*3/4, 25);
 
@@ -55,24 +55,32 @@ Game.prototype.update = function()
 	this.display2.value = this.p2.score;
 
 	// To which direction is the paddle is moving
-	if (this.keys.isPressed(P1_DOWN)) {	// DOWN
-		this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 5);
-	} else if (this.keys.isPressed(P1_UP)) {	// UP
-		this.p1.y = Math.max(0, this.p1.y - 5);
-	} else if (this.keys.isPressed(P1_LEFT)) {	// LEFT
-		this.p1.x = Math.max(0, this.p1.x - 5);
-	} else if (this.keys.isPressed(P1_RIGHT) && this.p1.x < this.width/2 - 20) {	// RIGHT
-		this.p1.x = Math.min(this.width - this.p1.width, this.p1.x + 5);		
+	if(this.p1.computerPlayer) {
+		console.log("Playing a P1 computerPlayer");
+	} else {
+		if (this.keys.isPressed(P1_DOWN)) {	// DOWN
+			this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 5);
+		} else if (this.keys.isPressed(P1_UP)) {	// UP
+			this.p1.y = Math.max(0, this.p1.y - 5);
+		} else if (this.keys.isPressed(P1_LEFT)) {	// LEFT
+			this.p1.x = Math.max(0, this.p1.x - 5);
+		} else if (this.keys.isPressed(P1_RIGHT) && this.p1.x < this.width/2 - 20) {	// RIGHT
+			this.p1.x = Math.min(this.width - this.p1.width, this.p1.x + 5);		
+		}
 	}
 
-	if (this.keys.isPressed(P2_DOWN)) {	// DOWN
-		this.p2.y = Math.min(this.height - this.p2.height, this.p2.y + 5);
-	} else if (this.keys.isPressed(P2_UP))	{	// UP
-		this.p2.y = Math.max(0, this.p2.y - 5);
-	} else if (this.keys.isPressed(P2_LEFT) && this.p2.x > this.width/2 + 20) {	// LEFT
-		this.p2.x = Math.max(0, this.p2.x - 5);		
-	} else if (this.keys.isPressed(P2_RIGHT)) {	// RIGHT
-		this.p2.x = Math.min(this.width - this.p2.width, this.p2.x + 5);
+	if(this.p2.computerPlayer) {
+		console.log("Playing a P2 computerPlayer");
+	} else {
+		if (this.keys.isPressed(P2_DOWN)) {	// DOWN
+			this.p2.y = Math.min(this.height - this.p2.height, this.p2.y + 5);
+		} else if (this.keys.isPressed(P2_UP))	{	// UP
+			this.p2.y = Math.max(0, this.p2.y - 5);
+		} else if (this.keys.isPressed(P2_LEFT) && this.p2.x > this.width/2 + 20) {	// LEFT
+			this.p2.x = Math.max(0, this.p2.x - 5);		
+		} else if (this.keys.isPressed(P2_RIGHT)) {	// RIGHT
+			this.p2.x = Math.min(this.width - this.p2.width, this.p2.x + 5);
+		}
 	}
 
 	// left and right collision
@@ -134,12 +142,15 @@ Game.prototype.score = function(p)
 		this.ball.vx *= -1;
 };
 
-function Paddle(x, y) {
+function Paddle(x, y, computerPlayer) {
 	this.x = x;
 	this.y = y;
 	this.width = 10;
 	this.height = 50;
 	this.score = 0;
+
+	// Computer Player
+	this.computerPlayer = computerPlayer;
 }
 
 Paddle.prototype.draw = function(p) 
