@@ -14,10 +14,11 @@ function Game() {
 	this.width = canvas.width;
 	this.height = canvas.height;
 	this.context = canvas.getContext("2d");
+	this.context.font = 'normal 15pt Calibri';  //You can edit the size here.
 	this.context.fillStyle = "white";
 	this.keys = new KeyListener();
 
-	this.p1 = new Paddle(5, 0, true);
+	this.p1 = new Paddle(5, 0, false);
 	this.p1.y = this.height/2 - this.p1.height/2;
 	this.display1 = new Display(this.width/4, 25);
 	this.p2 = new Paddle(this.width - 15, 0, true);
@@ -75,11 +76,14 @@ Game.prototype.update = function()
 			this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 4);
 		} else if (this.keys.isPressed(P1_UP)) {	// UP
 			this.p1.y = Math.max(0, this.p1.y - 4);
-		} else if (this.keys.isPressed(P1_LEFT) && this.p1.x > 5) {	// LEFT
+		} 
+		/*
+		else if (this.keys.isPressed(P1_LEFT) && this.p1.x > 5) {	// LEFT
 			this.p1.x = Math.max(0, this.p1.x - 2);
 		} else if (this.keys.isPressed(P1_RIGHT) && this.p1.x < this.width/2 - 20) {	// RIGHT
 			this.p1.x = Math.min(this.width - this.p1.width, this.p1.x + 2);		
-		}
+		}*/
+		
 	}
 
 	if(this.p2.computerPlayer) {
@@ -102,41 +106,27 @@ Game.prototype.update = function()
 			this.p2.y = Math.min(this.height - this.p2.height, this.p2.y + 2);
 		} else if (this.keys.isPressed(P2_UP))	{	// UP
 			this.p2.y = Math.max(0, this.p2.y - 2);
-		} else if (this.keys.isPressed(P2_LEFT) && this.p2.x > this.width/2 + 20) {	// LEFT
+		} 
+		/*else if (this.keys.isPressed(P2_LEFT) && this.p2.x > this.width/2 + 20) {	// LEFT
 			this.p2.x = Math.max(0, this.p2.x - 4);		
 		} else if (this.keys.isPressed(P2_RIGHT) && this.p2.x < this.width - 15) {	// RIGHT
 			this.p2.x = Math.min(this.width - this.p2.width, this.p2.x + 4);
-		}
+		}*/
 	}
 
 	// left and right collision
-	if (this.ball.vx > 0) {
-        if (this.p2.x <= this.ball.x + this.ball.width &&
-                this.p2.x > this.ball.x - this.ball.vx + this.ball.width) {
-            var collisionDiff = this.ball.x + this.ball.width - this.p2.x;
-            var k = collisionDiff/this.ball.vx;
-            var y = this.ball.vy*k + (this.ball.y - this.ball.vy);
-            if (y >= this.p2.y && y + this.ball.height <= this.p2.y + this.p2.height) {
-                // collides with right paddle
-                this.ball.x = this.p2.x - this.ball.width;
-                this.ball.y = Math.floor(this.ball.y - this.ball.vy + this.ball.vy*k);
-                this.ball.vx = -this.ball.vx;
-            }
-        }
-    } else {
-        if (this.p1.x + this.p1.width >= this.ball.x &&
-        		this.p1.x < this.ball.x - this.ball.vx - this.ball.width) {
-            var collisionDiff = this.p1.x + this.p1.width - this.ball.x;
-            var k = collisionDiff/-this.ball.vx;
-            var y = this.ball.vy*k + (this.ball.y - this.ball.vy);
-            if (y >= this.p1.y && y + this.ball.height <= this.p1.y + this.p1.height) {
-                // collides with the left paddle
-                this.ball.x = this.p1.x + this.p1.width;
-                this.ball.y = Math.floor(this.ball.y - this.ball.vy + this.ball.vy*k);
-                this.ball.vx = -this.ball.vx;
-            }
-        }
-    }
+	
+	var paddleCol = this.ball.vx < 0 ? this.p1 : this.p2;
+	var Intersect = function(px, py, pw, ph, bx, by, bw, bh){
+		return px < bx+bw && py < by+bh && bx < px+pw && by < py+ph;
+	};
+	
+	if(Intersect(paddleCol.x, paddleCol.y, paddleCol.width, paddleCol.height,
+					this.ball.x, this.ball.y, this.ball.width, this.ball.height)
+	)			{
+					this.ball.vx *= -1.1337;
+				}
+
  
     // Top and bottom collision
     if ((this.ball.vy < 0 && this.ball.y < 0) ||
