@@ -9,7 +9,7 @@ P2_DOWN = 40	// DOWN ARROW
 P2_LEFT = 37	// LEFT ARROW
 P2_RIGHT = 39	// RIGHT ARROW
 
-MAX_SPEED = 41
+MAX_SPEED = 31
 
 function Game() {
 	var canvas = document.getElementById("game");
@@ -20,6 +20,14 @@ function Game() {
 	this.context.fillStyle = "white";
 	this.keys = new KeyListener();
 
+	//Just made some chill background music. You can turn it off by commenting it out.
+	//Or we can change it / implement a button.
+	var bgMusic = new Audio('CoffeeBG.mp3');
+	bgMusic.addEventListener('ended', function(){
+		this.currentTime = 0;
+		this.play();
+	}, false);
+	bgMusic.play();
 	this.p1 = new Paddle(5, 0, false);
 	this.p1.y = this.height/2 - this.p1.height/2;
 	this.display1 = new Display(this.width/4, 25);
@@ -27,7 +35,7 @@ function Game() {
 	this.p2.y = this.height/2 - this.p2.height/2;
 	this.display2 = new Display(this.width*3/4, 25);
 
-	//this.velocity = new Display(0, 25); I used this to test out what the max speed the ball could go
+//	this.velocity = new Display(0, 25); //I used this to test out what the max speed the ball could go
 										// with the rate of acceleration we currently set.
 	
 	this.ball = new Ball();
@@ -50,7 +58,7 @@ Game.prototype.draw = function()
 	this.display1.draw(this.context);
 	this.display2.draw(this.context);
 	
-	//this.velocity.draw(this.context);  This was used to test the speed.
+	//this.velocity.draw(this.context); // This was used to test the speed.
 };
 
 Game.prototype.update = function()
@@ -61,7 +69,7 @@ Game.prototype.update = function()
 	this.ball.update();
 	this.display1.value = this.p1.score;
 	this.display2.value = this.p2.score;
-	//this.velocity.value = this.ball.vx; This was used to test the speed.
+//	this.velocity.value = this.ball.vx; //This was used to test the speed.
 	
 	// To which direction is the paddle is moving
 	if(this.p1.computerPlayer) {
