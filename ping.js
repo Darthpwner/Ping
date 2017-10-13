@@ -9,6 +9,8 @@ P2_DOWN = 40	// DOWN ARROW
 P2_LEFT = 37	// LEFT ARROW
 P2_RIGHT = 39	// RIGHT ARROW
 
+MAX_SPEED = 41
+
 function Game() {
 	var canvas = document.getElementById("game");
 	this.width = canvas.width;
@@ -25,6 +27,9 @@ function Game() {
 	this.p2.y = this.height/2 - this.p2.height/2;
 	this.display2 = new Display(this.width*3/4, 25);
 
+	//this.velocity = new Display(0, 25); I used this to test out what the max speed the ball could go
+										// with the rate of acceleration we currently set.
+	
 	this.ball = new Ball();
 	this.ball.x = this.width/2;
 	this.ball.y = this.height/2;
@@ -44,6 +49,8 @@ Game.prototype.draw = function()
 
 	this.display1.draw(this.context);
 	this.display2.draw(this.context);
+	
+	//this.velocity.draw(this.context);  This was used to test the speed.
 };
 
 Game.prototype.update = function()
@@ -54,7 +61,8 @@ Game.prototype.update = function()
 	this.ball.update();
 	this.display1.value = this.p1.score;
 	this.display2.value = this.p2.score;
-
+	//this.velocity.value = this.ball.vx; This was used to test the speed.
+	
 	// To which direction is the paddle is moving
 	if(this.p1.computerPlayer) {
 		console.log("Playing a P1 computerPlayer");
@@ -63,14 +71,16 @@ Game.prototype.update = function()
 			this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 4);
 
 			// Move left and right if necessary
-			if(this.ball.x < this.width / 2 - 20 && this.p1.x < this.width / 2 - 20) {
+		/*	if(this.ball.x < this.width / 2 - 20 && this.p1.x < this.width / 2 - 20) {
 				this.p1.x = Math.min(this.width - this.p1.width, this.p1.x + 2);
 			} else if (this.p1.x > 5) {
 				this.p1.x = Math.max(0, this.p1.x - 2);
-			}
+			}8
 		} else if (this.p1.y + this.p1.height / 2 > this.ball.y + this.ball.height / 2) {
 			this.p1.y = Math.max(0, this.p1.y - 4);
+		*/
 		}
+		
 	} else {
 		if (this.keys.isPressed(P1_DOWN)) {	// DOWN
 			this.p1.y = Math.min(this.height - this.p1.height, this.p1.y + 4);
@@ -116,6 +126,9 @@ Game.prototype.update = function()
 
 	// left and right collision
 	
+	var soundCol = document.createElement("audio");
+	soundCol.src = "CollisionSound.mp3"
+	
 	var paddleCol = this.ball.vx < 0 ? this.p1 : this.p2;
 	var Intersect = function(px, py, pw, ph, bx, by, bw, bh){
 		return px < bx+bw && py < by+bh && bx < px+pw && by < py+ph;
@@ -124,7 +137,11 @@ Game.prototype.update = function()
 	if(Intersect(paddleCol.x, paddleCol.y, paddleCol.width, paddleCol.height,
 					this.ball.x, this.ball.y, this.ball.width, this.ball.height)
 	)			{
-					this.ball.vx *= -1.1337;
+					if(Math.abs(this.ball.vx * -1.1337) >= MAX_SPEED)
+						this.ball.vx *= -1;
+					else
+						this.ball.vx *= -1.1337;
+					soundCol.play();
 				}
 
  
