@@ -11,6 +11,8 @@ P2_RIGHT = 39	// RIGHT ARROW
 
 MAX_SPEED = 31
 
+
+
 function Game() {
 	var canvas = document.getElementById("game");
 	this.width = canvas.width;
@@ -267,6 +269,13 @@ function MainLoop() {
 
 	// Call the main loop again at a frame rate of 30fps
 	setTimeout(MainLoop, 33.3333);
+}
+
+//Positioning the canvas to the center.
+
+window.onload = window.onresize = function() {
+	var canvas = document.getElementById('canvas');
+
 }
 
 // Start the game execution

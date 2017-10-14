@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE HTML>
 <html>
     <head>
@@ -7,18 +8,67 @@
     </head>
     
     <body>
-        <canvas id="game" width="512" height="256"></canvas>
-		
-        <h3>Left Paddle</h3>
-        <p>"w" - up</p>
-        <p>"s" - down</p>
-        <p>"a" - left</p>
-        <p>"d" - right</p>
+	<div>
+			<div>
+			<canvas id="game" width="556" height="300"></canvas>
+			</div>
+			
+			<div class="controls">
+				<img class="ctrl" src="controls.png">
+				<section class="left">
+							<h3>Left Paddle</h3>
+							<p>"w" - up</p>
+							<p>"s" - down</p>
+							<p>"a" - left</p>
+							<p>"d" - right</p>
+				</section>
+						
+				<section class="right">
+						<h3>Right Paddle</h3>
+						<p>"Up Arrow" - up</p>
+						<p>"Down Arrow" - down</p>
+						<p>"Left Arrow" - left</p>
+						<p>"Right Arrow" - right</p>		
+				</section>
+			</div>
+    </body>
+</html>
 
-        <h3>Right Paddle</h3>
-        <p>"Up Arrow" - up</p>
-        <p>"Down Arrow" - down</p>
-        <p>"Left Arrow" - left</p>
-        <p>"Right Arrow" - right</p>
+-->
+
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Ping</title>
+        <script defer src="ping.js"></script>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    
+    <body>
+	<div class="container">
+			<canvas id="game" width="556" height="300"></canvas>
+			
+			<p class="controls">
+				<section class="controllers">
+				
+				<img class="ctrl" src="controls.png">
+						<section class="left">
+							<h3>Left Paddle</h3>
+							<p>"w" - up</p>
+							<p>"s" - down</p>
+							<p>"a" - left</p>
+							<p>"d" - right</p>
+						</section>
+							
+						<section class="right">
+							<h3>Right Paddle</h3>
+							<p>"Up Arrow" - up</p>
+							<p>"Down Arrow" - down</p>
+							<p>"Left Arrow" - left</p>
+							<p>"Right Arrow" - right</p>
+						</section>
+				</section>
+			</p>
+	</div>
     </body>
 </html>
